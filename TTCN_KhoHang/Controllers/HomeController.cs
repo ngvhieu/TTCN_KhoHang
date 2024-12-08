@@ -23,7 +23,17 @@ namespace TTCN_KhoHang.Controllers
             }
             return View();
         }
-
+        [HttpGet,Route("/logout"),ActionName(nameof(Logout))]
+        public IActionResult Logout()
+        {
+            Functions._UserID = 0;
+            Functions._UserName = string.Empty;
+            Functions._Email = string.Empty;
+            Functions._Message = string.Empty;
+            Functions._MessageEmail = string.Empty;
+            Functions._Role = 0;
+            return RedirectToAction("Index", "Home");
+        }
         public IActionResult Privacy()
         {
             return View();

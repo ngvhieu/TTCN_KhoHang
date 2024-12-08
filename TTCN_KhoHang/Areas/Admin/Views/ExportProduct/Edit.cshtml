@@ -1,0 +1,145 @@
+﻿@model TTCN_KhoHang.ViewModels.ExportView
+@{
+    ViewBag.Title = "Edit Export Product";
+}
+
+@for (var i = 0; i < Model.ExportDetails.Count; i++)
+{
+    <form method="post" action="/ExportProduct/Edit/exportdetail/@Model.export_id" id="form_@i" asp-antiforgery="false" hidden></form>
+}
+<main class="content">
+    @await Component.InvokeAsync("MenuView")
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <form asp-action="Edit" method="post" asp-antiforgery="true">
+                <input asp-for="export_id" hidden />
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Mã xuất hàng:</label>
+                            <span>@Model.export_id</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Thời gian:</label>
+                            <span>@Model.export_date</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Khách hàng:</label>
+                            <select asp-for="customer_id" class="form-select">
+                                @foreach (var customer in Model.Customers)
+                                {
+                                    if (Model.customer_id == customer.customer_id)
+                                    {
+                                        <option value="@customer.customer_id" selected>@customer.customer_name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@customer.customer_id">@customer.customer_name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chi nhánh:</label>
+                            <select asp-for="warehouse_id" class="form-select">
+                                @foreach (var warehouse in Model.Warehouses)
+                                {
+                                    if (Model.warehouse_id == warehouse.warehouse_id)
+                                    {
+                                        <option value="@warehouse.warehouse_id" selected">@warehouse.warehousename</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@warehouse.warehouse_id" selected">@warehouse.warehousename</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái:</label>
+                            <select asp-for="status" class="form-select">
+                                @Html.Raw($"<option value=\"Pending\" {(Model.status == "Pending" ? "selected" : "")}>Pending</option>")
+                                @Html.Raw($"<option value=\"Completed\" {(Model.status == "Completed" ? "selected" : "")}>Completed</option>")
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Người xuất:</label>
+                            <span>@Model.user_name</span>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã hàng</th>
+                            <th>Tên hàng</th>
+                            <th class="text-end">Số lượng</th>
+                            <th class="text-end">Đơn giá</th>
+                            <th class="text-end">Giảm giá</th>
+                            <th class="text-end">Thành tiền</th>
+                            <th width="30px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.ExportDetails.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.ExportDetails[i].product_id
+                                    <input name="export_detail_id" value="@Model.ExportDetails[i].export_detail_id" form="form_@i" hidden />
+                                    <input name="product_id" value="@Model.ExportDetails[i].product_id" form="form_@i" hidden />
+                                </td>
+
+                                <td>@Model.Products.FirstOrDefault(m => m.product_id == Model.ExportDetails[i].product_id)!.name</td>
+                                <td class="text-end">
+                                    <input name="quantity" value="@Model.ExportDetails[i].quantity" form="form_@i" class="form-control text-end" />
+                                </td>
+                                <td class="text-end">
+                                    <input name="unit_price" value="@Model.ExportDetails[i].unit_price" form="form_@i" class="form-control text-end" />
+                                </td>
+                                <td class="text-end">0</td>
+                                <td class="text-end">@Model.ExportDetails[i].total_price</td>
+                                <td><button type="submit" form="form_@i"><i class="fas fa-save"></i>Lưu</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Tổng số lượng:</td>
+                            <td class="text-end">26</td>
+                            <td colspan="4"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Tổng số mặt hàng:</td>
+                            <td class="text-end">2</td>
+                            <td colspan="4"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-end">Tổng tiền hàng:</td>
+                            <td class="text-end">130,500</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-end">Giảm giá:</td>
+                            <td class="text-end">0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-end">Tổng cộng:</td>
+                            <td class="text-end">130,500</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-end">Tiền đã thu khách:</td>
+                            <td class="text-end">131,000</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="d-flex justify-content-start button-group mt-3">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Lưu</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back();"><i class="fas fa-undo"></i> Quay lại</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

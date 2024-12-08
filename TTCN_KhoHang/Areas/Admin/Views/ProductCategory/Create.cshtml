@@ -1,0 +1,26 @@
+﻿@model TTCN_KhoHang.Models.ProductCategory
+<main class="content">
+	@await Component.InvokeAsync("MenuView")
+	<form method="post" class="card border-0 shadow p-3 pb-4 mb-4">
+		<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
+			<h3 class="h5 mb-0">Create ProductCategory</h3>
+		</div>
+		<div class="card-body p-0 p-md-4">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-6">
+					<div class="form-group mb-4">
+						<label asp-for="categoryname">Category Name</label>
+						<input type="text" class="form-control" placeholder="product name" id="cartInputname" aria-describedby="cartInputname" asp-for="categoryname" required="">
+					</div>
+				</div>
+				<div class="col-12 col-lg-6">
+					<div class="form-group mb-4">
+						<label asp-for="note">Company</label>
+						<input type="text" placeholder="Description" class="form-control" id="cartInputdes" aria-describedby="cartInputdes" asp-for="note">
+					</div>
+				</div>
+				<div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Create</button></div>
+			</div>
+		</div>
+	</form>
+</main>

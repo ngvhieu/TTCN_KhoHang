@@ -1,0 +1,257 @@
+﻿
+@using TTCN_KhoHang.Models
+@model TTCN_KhoHang.ViewModels.ExportView
+<main class="content">
+    @await Component.InvokeAsync("MenuView")
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <form method="post" action="/ExportProduct/Create">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Thông tin phiếu xuất</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Khách hàng</label>
+                                    <select name="customer_id" class="form-control" required>
+                                        <option value="">-- Chọn khách hàng --</option>
+                                        @foreach (var customer in Model.Customers)
+                                        {
+                                            <option value="@customer.customer_id">@customer.customer_name</option>
+                                        }
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" onclick="openNewCustomerModal()">
+                                            <i class="fas fa-plus"></i> Thêm mới
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Kho hàng</label>
+                                    <select name="warehouse_id" class="form-control" required>
+                                        <option value="">-- Chọn kho hàng --</option>
+                                        @foreach (var warehouse in Model.Warehouses)
+                                        {
+                                            <option value="@warehouse.warehouse_id">@warehouse.warehousename</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <textarea name="note" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>Chi tiết xuất hàng</h4>
+                        <button type="button" class="btn btn-primary" onclick="addProduct()">
+                            <i class="fas fa-plus"></i> Thêm sản phẩm
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="productTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th width="150px">Số lượng</th>
+                                        <th width="200px">Đơn giá</th>
+                                        <th width="200px">Thành tiền</th>
+                                        <th width="100px">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productRows">
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-right"><strong>Tổng tiền:</strong></td>
+                                        <td colspan="2">
+                                            <span id="totalAmount">0</span>
+                                            <input type="hidden" name="total_amount" id="total_amount_input" value="0">
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 mb-5">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Lưu phiếu xuất
+                    </button>
+                    <a href="/ExportProduct" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="newCustomerModal" tabindex="-1" role="dialog" aria-labelledby="newCustomerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newCustomerModalLabel">Thêm mới khách hàng</h5>
+                    <button type="button" class="close" onclick="closeModal(this)" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="newCustomerForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="customer_name">Tên khách hàng <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_address">Địa chỉ</label>
+                            <input type="text" class="form-control" id="customer_address" name="address">
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_phone">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_email">Email</label>
+                            <input type="email" class="form-control" id="customer_email" name="customer_email">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu khách hàng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<script>
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(amount);
+    }
+
+    function addProduct() {
+        const index = document.getElementById('productRows').children.length;
+        const row = `
+                            <tr>
+                                <td>
+                                    <select name="ExportDetails[${index}].product_id" class="form-control" required onchange="updatePrice(this)">
+                                        <option value="">-- Chọn sản phẩm --</option>
+    @foreach (var product in Model.Products)
+    {
+                                                <option value="@product.product_id" data-price="@product.price_out">@product.name</option>
+    }
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="ExportDetails[${index}].quantity" class="form-control"
+                                           min="1" required onchange="calculateRowTotal(this)">
+                                </td>
+                                <td>
+                                    <input type="number" name="ExportDetails[${index}].unit_price" class="form-control"
+                                           min="0" required onchange="calculateRowTotal(this)">
+                                </td>
+                                <td>
+                                    <input type="number" name="ExportDetails[${index}].total_price" class="form-control row-total" readonly>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+        document.getElementById('productRows').insertAdjacentHTML('beforeend', row);
+    }
+
+    function updatePrice(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const price = selectedOption.dataset.price;
+        const row = selectElement.closest('tr');
+        row.querySelector('input[name$="].unit_price"]').value = price;
+        calculateRowTotal(row.querySelector('input[name$="].quantity"]'));
+    }
+
+    function calculateRowTotal(element) {
+        const row = element.closest('tr');
+        const quantity = parseFloat(row.querySelector('input[name$="].quantity"]').value) || 0;
+        const unitPrice = parseFloat(row.querySelector('input[name$="].unit_price"]').value) || 0;
+        const total = quantity * unitPrice;
+        row.querySelector('input[name$="].total_price"]').value = total;
+        updateTotalAmount();
+    }
+
+    function updateTotalAmount() {
+        let total = 0;
+        document.querySelectorAll('.row-total').forEach(input => {
+            total += parseFloat(input.value) || 0;
+        });
+        document.getElementById('totalAmount').textContent = formatMoney(total);
+        document.getElementById('total_amount_input').value = total;
+    }
+
+    function removeProduct(button) {
+        button.closest('tr').remove();
+        updateTotalAmount();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        addProduct();
+    });
+
+    function openNewCustomerModal() {
+        $('#newCustomerModal').modal('show');
+    }
+
+    function closeModal(e) {
+        $('#newCustomerModal').modal('hide');
+    }
+
+    // $('#newCustomerModalLabel .close').addEventListener('onClick', () => $('#newCustomerModal').modal('close'))
+
+    $('#newCustomerForm').submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CreateAPI", "Customers")',
+                contentType: "application/json",
+            data: JSON.stringify({
+                customer_name: $('#customer_name').val(),
+                customer_address: $('#customer_address').val(),
+                customer_phone: $('#customer_phone').val(),
+                customer_email: $('#customer_email').val()
+            }),
+            success: function (response) {
+                if (response.customer) {
+                    $('#newCustomerModal').modal('hide');
+                    updateCustomerDropdown(response.customer);
+                } else {
+                    console.log(response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("Error:", error);
+            }
+        });
+
+    });
+
+     function updateCustomerDropdown(newCustomer) {
+         $('select[name="customer_id"]').append(`<option value="${newCustomer.customer_id}">${newCustomer.customer_name}</option>`);
+     }
+</script>

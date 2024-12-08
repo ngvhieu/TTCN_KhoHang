@@ -1,0 +1,31 @@
+﻿@model TTCN_KhoHang.Models.ProductCategory
+<main class="content">
+    @await Component.InvokeAsync("MenuView")
+    <form class="card border-0 shadow p-3 pb-4 mb-4">
+       
+        <div  class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
+            <h3 class="h5 mb-0">Delete ProductCategory</h3>
+        </div>
+        <div class="card-body p-0 p-md-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-6">
+                    <div class="form-group mb-4">
+                        <label asp-for="categoryname">Category Name</label>
+                        <input type="text" class="form-control" placeholder="product name" id="cartInputname" asp-for="categoryname" required=""disabled>
+                        <span asp-validation-for="categoryname" class="alert-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="form-group mb-4">
+                        <label asp-for="note">Description</label>
+                        <input type="text" class="form-control" placeholder="Description" id="cartInputdes" asp-for="note" disabled>
+                        <span asp-validation-for="note" class="alert-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Delete</button></div>
+            </div>
+        </div>
+    </form>
+
+</main>

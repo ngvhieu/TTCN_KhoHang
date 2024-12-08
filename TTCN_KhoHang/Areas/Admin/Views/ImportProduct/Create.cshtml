@@ -1,0 +1,177 @@
+﻿@using TTCN_KhoHang.Models
+@using System.Globalization
+@model TTCN_KhoHang.ViewModels.ImportView
+<main class="content">
+	@await Component.InvokeAsync("MenuView")
+	<div class="card border-0 shadow mb-4">
+		<div class="card-body">
+
+			<form method="post" action="/ImportProduct/Create">
+				<div class="card">
+					<div class="card-header">
+						<h4>Thông tin phiếu nhập</h4>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Nhà cung cấp</label>
+									<select name="supplier_id" class="form-control" required>
+										<option value="">-- Chọn nhà cung cấp --</option>
+										@foreach (var supplier in Model.Suppliers)
+										{
+											<option value="@supplier.supplier_id">@supplier.supplier_name</option>
+										}
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Kho hàng</label>
+									<select name="warehouse_id" class="form-control" required>
+										<option value="">-- Chọn kho hàng --</option>
+										@foreach (var warehouse in Model.Warehouses)
+										{
+											<option value="@warehouse.warehouse_id">@warehouse.warehousename</option>
+										}
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mt-3">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Ghi chú</label>
+									<textarea name="note" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card mt-4">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<h4>Chi tiết nhập hàng</h4>
+						<button type="button" class="btn btn-primary" onclick="addProduct()">
+							<i class="fas fa-plus"></i> Thêm sản phẩm
+						</button>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="productTable">
+								<thead>
+									<tr>
+										<th>Sản phẩm</th>
+										<th width="150px">Số lượng</th>
+										<th width="200px">Đơn giá</th>
+										<th width="200px">Thành tiền</th>
+										<th width="100px">Thao tác</th>
+									</tr>
+								</thead>
+								<tbody id="productRows">
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3" class="text-right"><strong>Tổng tiền:</strong></td>
+										<td colspan="2">
+											<span id="totalAmount">0</span>
+											<input type="hidden" name="total_amount" id="total_amount_input" value="0">
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-3 mb-5">
+					<button type="submit" class="btn btn-success">
+						<i class="fas fa-save"></i> Lưu phiếu nhập
+					</button>
+					<a href="/ImportProduct" class="btn btn-secondary">
+						<i class="fas fa-times"></i> Hủy
+					</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>
+<script>
+	function formatMoney(amount) {
+		return new Intl.NumberFormat('vi-VN', {
+			style: 'currency',
+			currency: 'VND'
+		}).format(amount);
+	}
+
+	function addProduct() {
+		const index = document.getElementById('productRows').children.length;
+		const row = `
+					<tr>
+						<td>
+							<select name="ImportDetails[${index}].product_id" class="form-control" required onchange="updatePrice(this)">
+								<option value="">-- Chọn sản phẩm --</option>
+	@foreach (var product in Model.Products)
+	{
+											<option value="@product.product_id" data-price="@product.price_in">@product.name</option>
+	}
+							</select>
+						</td>
+						<td>
+							<input type="number" name="ImportDetails[${index}].quantity" class="form-control"
+								   min="1" required onchange="calculateRowTotal(this)">
+						</td>
+						<td>
+							<input type="number" name="ImportDetails[${index}].unit_price" class="form-control"
+								   min="0" required onchange="calculateRowTotal(this)">
+						</td>
+						<td>
+							<input type="number" name="ImportDetails[${index}].total_price" class="form-control row-total" readonly>
+						</td>
+						<td class="text-center">
+							<button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this)">
+								<i class="fas fa-trash"></i>
+							</button>
+						</td>
+					</tr>
+				`;
+		document.getElementById('productRows').insertAdjacentHTML('beforeend', row);
+	}
+
+	function updatePrice(selectElement) {
+		const selectedOption = selectElement.options[selectElement.selectedIndex];
+		const price = selectedOption.dataset.price;
+		const row = selectElement.closest('tr');
+		row.querySelector('input[name$="].unit_price"]').value = price;
+		calculateRowTotal(row.querySelector('input[name$="].quantity"]'));
+	}
+
+	function calculateRowTotal(element) {
+		const row = element.closest('tr');
+		const quantity = parseFloat(row.querySelector('input[name$="].quantity"]').value) || 0;
+		const unitPrice = parseFloat(row.querySelector('input[name$="].unit_price"]').value) || 0;
+		const total = quantity * unitPrice;
+		row.querySelector('input[name$="].total_price"]').value = total;
+		updateTotalAmount();
+	}
+
+	function updateTotalAmount() {
+		let total = 0;
+		document.querySelectorAll('.row-total').forEach(input => {
+			total += parseFloat(input.value) || 0;
+		});
+		document.getElementById('totalAmount').textContent = formatMoney(total);
+		document.getElementById('total_amount_input').value = total;
+	}
+
+	function removeProduct(button) {
+		button.closest('tr').remove();
+		updateTotalAmount();
+	}
+
+	// Add first row when page loads
+	document.addEventListener('DOMContentLoaded', function () {
+		addProduct();
+	});
+</script>

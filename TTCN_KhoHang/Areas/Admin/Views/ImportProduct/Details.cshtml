@@ -1,0 +1,69 @@
+﻿@* @using cnpm.Models
+@using System.Globalization
+@model IList<ImportDetail>
+
+<main class="content">
+	@await Component.InvokeAsync("MenuView")
+
+	<div class="card border-0 shadow mb-4">
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-centered table-nowrap mb-0 rounded">
+					<thead class="thead-light">
+						<tr>
+							<th class="border-0 rounded-start">#</th>
+							<th class="border-0">Import ID</th>
+							<th class="border-0">Product ID</th>
+							<th class="border-0">Quantity</th>
+							<th class="border-0">Unit Price</th>
+							<th class="border-0">Mfg/Exp</th>
+							<th class="border-0">Location</th>
+							<th class="border-0 rounded-end">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var pd in Model)
+						{
+							<tr>
+								<td><a href="#" class="text-primary fw-bold">@pd.product_id</a></td>
+								<td class="fw-bold d-flex align-items-center">@pd.name</td>
+								<td>@pd.category_id</td>
+								<td>@pd.price_in / @pd.price_out</td>
+								<td>@pd.quantity</td>
+								<td>
+									@(pd.mfg.HasValue ? pd.mfg.Value.ToString("dd/MM/yyyy") : "N/A") /
+									@(pd.exp.HasValue ? pd.exp.Value.ToString("dd/MM/yyyy") : "N/A")
+								</td>
+								<td>@pd.location</td>
+								<td style="text-align: center;">
+									<div class="btn-group">
+										<button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="icon icon-sm">
+												<span class="fas fa-ellipsis-h icon-dark" style="text-align: center;"></span>
+											</span>
+											<span class="visually-hidden">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu py-0">
+											<a asp-controller="Product" asp-action="Details" asp-route-id="@pd.product_id" class="dropdown-item rounded-top">
+												<span class="fas fa-eye me-2"></span>View Details
+											</a>
+											<a class="dropdown-item" asp-controller="Product" asp-action="Edit" asp-route-id="@pd.product_id">
+												<span class="fas fa-edit me-2"></span>Edit
+											</a>
+											<form asp-controller="Product" asp-action="Delete" asp-route-id="@pd.product_id" method="post">
+												<button type="submit" class="dropdown-item text-danger rounded-bottom">
+													<span class="fas fa-trash-alt me-2"></span>Removes
+												</button>
+											</form>
+										</div>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</main>
+ *@

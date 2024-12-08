@@ -41,24 +41,11 @@
 <body>
     <div class="wrapper">
         
-        @if (Functions._Role != 0)
+        @if(Functions._Role != 0)
         {
-            if (Functions._Role == 2)
-            {
-                <script>window.location.href = '@Url.Action("Index", "Admin")';</script>
-            }
-            else
-            {
-                @await Component.InvokeAsync("MenuView")
-                @RenderBody()
-            }
-        }
-        else
-        {
+            @await Component.InvokeAsync("MenuView")
             @RenderBody()
         }
-
-
         @RenderBody()
 
         
