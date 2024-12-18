@@ -1,0 +1,206 @@
+﻿@* @using TTCN_KhoHang.ViewModels
+@using System.Globalization
+@model IList<OrderView>
+
+<div class="container">
+    <div class="page-inner">
+        <div class="card border-0 shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0 rounded">
+                        <thead class="thead-light">
+                            <tr>
+                                <th width="30px"><input type="checkbox" class="form-check-input"></th>
+                                <th>Mã đơn hàng</th>
+                                <th>Thời gian</th>
+                                <th>Người tạo</th>
+                                <th width="100px" class="text-end">Tổng tiền</th>
+                                <th width="150px">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.GroupBy(o => o.order_id).Select(g => g.First()))
+                            {
+                                <tr class="order-row" data-bs-toggle="collapse" data-bs-target="#orderDetail_@order.order_id">
+                                    <td><input type="checkbox" class="form-check-input"></td>
+                                    <td>@order.order_id</td>
+                                    <td>@order.order_date.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@order.user_name</td>
+                                    <td class="text-end">@(((int)(order.total_amount)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                    <td><span class="badge @(order.order_status == "Pending" ? "bg-warning" : "bg-success")">@order.order_status</span></td>
+                                </tr>
+                                <tr class="collapse detail-row" id="orderDetail_@order.order_id">
+                                    <td colspan="6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Mã hàng</th>
+                                                            <th>Tên hàng</th>
+                                                            <th class="text-end">Số lượng</th>
+                                                            <th class="text-end">Đơn giá</th>
+                                                            <th class="text-end">Thành tiền</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var detail in Model.Where(d => d.order_id == order.order_id))
+                                                        {
+                                                            <tr>
+                                                                <td>@detail.product_id</td>
+                                                                <td>@detail.product_name</td>
+                                                                <td class="text-end">@detail.quantity</td>
+                                                                <td class="text-end">@(((int)(detail.unit_price)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                                                <td class="text-end">@(((int)(detail.total_price)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="2">Tổng số lượng:</td>
+                                                            <td class="text-end">@Model.Where(d => d.order_id == order.order_id).Sum(d => d.quantity)</td>
+                                                            <td colspan="2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Tổng tiền hàng:</td>
+                                                            <td colspan="3" class="text-end">@(((int)(order.total_amount)).ToString("N0", CultureInfo.InvariantCulture))</td>
+
+                                                        </tr>
+
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@
+ @using TTCN_KhoHang.ViewModels
+@using System.Globalization
+@model IList<OrderView>
+
+<div class="container">
+    <div class="page-inner">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="card border-0 shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0 rounded">
+                        <thead class="thead-light">
+                            <tr>
+                                <th width="30px"><input type="checkbox" class="form-check-input"></th>
+                                <th>Mã đơn hàng</th>
+                                <th>Thời gian</th>
+                                <th>Người tạo</th>
+                                <th width="100px" class="text-end">Tổng tiền</th>
+                                <th width="150px">Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.GroupBy(o => o.order_id).Select(g => g.First()))
+                            {
+                                <tr class="order-row" data-bs-toggle="collapse" data-bs-target="#orderDetail_@order.order_id">
+                                    <td><input type="checkbox" class="form-check-input"></td>
+                                    <td>@order.order_id</td>
+                                    <td>@order.order_date.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@order.user_name</td>
+                                    <td class="text-end">@(((int)(order.total_amount)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                    <td>
+                                        <span class="badge @(order.order_status == "Pending" ? "bg-warning" : (order.order_status == "Approved" ? "bg-success" : "bg-danger"))">
+                                            @order.order_status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (order.order_status == "Pending")
+                                        {
+                                            <div class="btn-group" role="group">
+                                                <form asp-area="Admin" asp-controller="OrderAdmin" asp-action="Approve" method="post" class="d-inline">
+                                                    <input type="hidden" name="orderId" value="@order.order_id" />
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <i class="fas fa-check"></i> Duyệt
+                                                    </button>
+                                                </form>
+                                                <form asp-area="Admin" asp-controller="OrderAdmin" asp-action="Reject" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@order.order_id" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-times"></i> Từ chối
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr class="collapse detail-row" id="orderDetail_@order.order_id">
+                                    <td colspan="7">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Mã hàng</th>
+                                                            <th>Tên hàng</th>
+                                                            <th class="text-end">Số lượng</th>
+                                                            <th class="text-end">Đơn giá</th>
+                                                            <th class="text-end">Thành tiền</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var detail in Model.Where(d => d.order_id == order.order_id))
+                                                        {
+                                                            <tr>
+                                                                <td>@detail.product_id</td>
+                                                                <td>@detail.product_name</td>
+                                                                <td class="text-end">@detail.quantity</td>
+                                                                <td class="text-end">@(((int)(detail.unit_price)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                                                <td class="text-end">@(((int)(detail.total_price)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="2">Tổng số lượng:</td>
+                                                            <td class="text-end">@Model.Where(d => d.order_id == order.order_id).Sum(d => d.quantity)</td>
+                                                            <td colspan="2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Tổng tiền hàng:</td>
+                                                            <td colspan="3" class="text-end">@(((int)(order.total_amount)).ToString("N0", CultureInfo.InvariantCulture))</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model TTCN_KhoHang.Models.Supplier
+<div class="container">
+	<div class="page-inner">
+	<form method="post" asp-action="Edit" class="card border-0 shadow p-3 pb-4 mb-4">
+		<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
+			<h3 class="h5 mb-0">Edit Customers</h3>
+		</div>
+		<input asp-for="supplier_id" required hidden="">
+		<div class="card-body p-0 p-md-4">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-6">
+					<div class="form-group mb-4">
+						<label asp-for="supplier_name">Name</label>
+						<input type="text" class="form-control" placeholder="name" id="cartInputname" aria-describedby="cartInputname" asp-for="supplier_name" required="">
+						<span asp-validation-for="supplier_name" class="alert-danger"></span>
+					</div>
+				</div>
+				<div class="col-12 col-lg-6">
+					<div class="form-group mb-4">
+						<label asp-for="address">Address</label>
+						<input type="text" placeholder="address" class="form-control" id="cartInputdes" aria-describedby="cartInputdes" asp-for="address">
+						<span asp-validation-for="address" class="alert-danger"></span>
+					</div>
+				</div>
+				<div class="col-12 col-lg-3">
+					<div class="form-group mb-4">
+						<label asp-for="phone">Phone</label>
+						<input type="text" placeholder="customer_phone" class="form-control" id="cartInputprin" aria-describedby="cartInputprin" asp-for="phone">
+						<span asp-validation-for="phone" class="alert-danger"></span>
+					</div>
+				</div>
+				<div class="col-12 col-lg-3">
+					<div class="form-group mb-4">
+						<label asp-for="email">Email</label>
+						<input type="email" placeholder="email" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="email">
+						<span asp-validation-for="email" class="alert-danger"></span>
+					</div>
+				</div>
+				<div class="col-12 col-lg-3">
+					<div class="form-group mb-4">
+						<label asp-for="tax">tax</label>
+						<input type="text" placeholder="tax" class="form-control" id="cartInputprodut" aria-describedby="cartInputprodut" asp-for="tax">
+						<span asp-validation-for="tax" class="alert-danger"></span>
+					</div>
+				</div>
+				<div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Edit</button></div>
+			</div>
+		</div>
+	</form>
+	</div>
+</div>

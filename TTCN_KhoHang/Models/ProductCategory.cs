@@ -8,7 +8,7 @@ namespace TTCN_KhoHang.Models
 		[Key]
 		public int category_id { get; set; }
 		public string categoryname { get; set; }
-		public string note { get; set; }
+		public string? note { get; set; }
 		
 	}
 }

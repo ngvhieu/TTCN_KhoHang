@@ -1,6 +1,6 @@
 ﻿@model TTCN_KhoHang.Models.Product
-<main class="content">
-	@await Component.InvokeAsync("MenuView")
+<div class="container">
+	<div class="page-inner">
 	<form method="post" asp-action="Edit" class="card border-0 shadow p-3 pb-4 mb-4">
 		<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
 			<h3 class="h5 mb-0">Edit Product</h3>
@@ -86,4 +86,5 @@
 			</div>
 		</div>
 	</form>
-</main> 
+	</div>
+</div>

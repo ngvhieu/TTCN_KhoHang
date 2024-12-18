@@ -1,6 +1,6 @@
 ﻿@model TTCN_KhoHang.Models.ProductCategory
-<main class="content">
-	@await Component.InvokeAsync("MenuView")
+<div class="container">
+    <div class="page-inner">
     <form method="post" asp-action="Edit" class="card border-0 shadow p-3 pb-4 mb-4">
         <input type="hidden" asp-for="category_id" />
         <div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
@@ -28,4 +28,5 @@
         </div>
     </form>
 
-</main>
+    </div>
+</div>

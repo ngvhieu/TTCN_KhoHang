@@ -24,6 +24,7 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 						  join d in _context.Warehouses on a.warehouse_id equals d.warehouse_id
 						  join e in _context.ImportDetails on a.import_id equals e.import_id
 						  join f in _context.Products on e.product_id equals f.product_id
+						  join g in _context.ProductCategorys on f.category_id equals g.category_id
 						  select new ImportView
 						  {
 							  import_id = a.import_id,
@@ -38,6 +39,8 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 							  quantity = e.quantity,
 							  unit_price = e.unit_price,
 							  total_price = e.total_price,
+							  category_id = g.category_id,
+							  categoryname = g.categoryname,
 						  }).ToList();
 			return View(import);
 		}
@@ -47,11 +50,13 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 			{
 				Suppliers = _context.Suppliers.ToList(),
 				Warehouses = _context.Warehouses.ToList(),
-				Products = _context.Products.ToList()
+				Products = _context.Products.ToList(),
+				ProductCategories = _context.ProductCategorys.ToList()
 			};
 			return View(viewModel);
 		}
 
+		[HttpPost]
 		[HttpPost]
 		public async Task<ActionResult> Create(ImportProduct model, List<ImportDetail> ImportDetails)
 		{
@@ -65,18 +70,23 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 				// Lưu ImportProduct vào cơ sở dữ liệu
 				_context.ImportProducts.Add(model);
 				_context.SaveChanges();
-				// Thêm từng ImportDetail và cập nhật số lượng sản phẩm
+
+				// Thêm từng ImportDetail và cập nhật số lượng và giá sản phẩm
 				foreach (var detail in ImportDetails)
 				{
 					detail.import_id = model.import_id;
-					_context.Add(detail);
+					_context.ImportDetails.Add(detail);
 
-					// Cập nhật số lượng sản phẩm trong bảng Products
-					var product = _context.Products.FirstOrDefault( m=> m.product_id == detail.product_id);
+					// Cập nhật số lượng và giá nhập sản phẩm trong bảng Products
+					var product = _context.Products.FirstOrDefault(m => m.product_id == detail.product_id);
 					if (product != null)
 					{
 						product.quantity += detail.quantity;
-						_context.Update(product);
+
+						// Cập nhật giá nhập (price_in)
+						product.price_in = detail.unit_price;
+
+						_context.Products.Update(product);
 					}
 				}
 
@@ -100,6 +110,7 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 				return View(viewModel);
 			}
 		}
+
 		[HttpGet]
 		public IActionResult Edit(int id)
 		{

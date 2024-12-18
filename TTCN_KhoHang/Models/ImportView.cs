@@ -19,11 +19,14 @@ namespace TTCN_KhoHang.ViewModels
 		public int supplier_id { get; set; }
 		public int warehouse_id { get; set; }
 		public int user_id { get; set; }
+		public int category_id { get; set; }
+		public string categoryname { get; set; }
 
 		public ImportProduct ImportProduct { get; set; }
 		public List<ImportDetail> ImportDetails { get; set; }
 		public List<Supplier> Suppliers { get; set; }
 		public List<Warehouse> Warehouses { get; set; }
 		public List<Product> Products { get; set; }
+		public List<ProductCategory>? ProductCategories { get; set; }
 	}
 }

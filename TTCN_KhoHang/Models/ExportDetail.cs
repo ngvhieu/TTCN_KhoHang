@@ -9,9 +9,11 @@ namespace TTCN_KhoHang.Models
 		[Key]
 		public int export_detail_id { get; set; }
 		public int export_id { get; set; }
+		[ForeignKey(nameof(product))]
 		public int product_id { get; set; }
 		public int quantity { get; set; }
-		public decimal unit_price { get; set; }
-		public decimal total_price { get; set; }
+		public decimal? unit_price { get; set; }
+		public decimal? total_price { get; set; }
+		public Product? product { get; set; }
 	}
 }

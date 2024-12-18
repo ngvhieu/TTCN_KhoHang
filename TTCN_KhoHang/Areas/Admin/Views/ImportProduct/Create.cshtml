@@ -1,12 +1,12 @@
-﻿@using TTCN_KhoHang.Models
+﻿ @using TTCN_KhoHang.Models
 @using System.Globalization
 @model TTCN_KhoHang.ViewModels.ImportView
-<main class="content">
-	@await Component.InvokeAsync("MenuView")
+<div class="container">
+	<div class="page-inner">
 	<div class="card border-0 shadow mb-4">
 		<div class="card-body">
 
-			<form method="post" action="/ImportProduct/Create">
+			<form method="post" action="/Admin/ImportProduct/Create">
 				<div class="card">
 					<div class="card-header">
 						<h4>Thông tin phiếu nhập</h4>
@@ -89,14 +89,136 @@
 					<button type="submit" class="btn btn-success">
 						<i class="fas fa-save"></i> Lưu phiếu nhập
 					</button>
-					<a href="/ImportProduct" class="btn btn-secondary">
+					<a href="/Admin/ImportProduct" class="btn btn-secondary">
 						<i class="fas fa-times"></i> Hủy
 					</a>
 				</div>
 			</form>
 		</div>
 	</div>
-</main>
+	</div>
+	<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm mới</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="newProductForm">
+					<div class="form-group">
+						<label for="productName">Tên sản phẩm</label>
+						<input type="text" class="form-control" id="productName" name="name" required>
+					</div>
+					<div class="form-group">
+						<label for="productCategory">Danh mục</label>
+						<select class="form-control" id="productCategory" name="category_id" required>
+							<option value="">-- Chọn danh mục --</option>
+							@foreach (var category in Model.ProductCategories)
+							{
+								<option value="@category.category_id">@category.categoryname</option>
+							}
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="mfg">MFG</label>
+						<input type="date" class="form-control" id="mfg" name="mfg" required>
+					</div>
+					<div class="form-group">
+						<label for="exp">EXP</label>
+						<input type="date" class="form-control" id="exp" name="exp" required>
+					</div>
+					<div class="form-group " style="display: none;">
+						<label for="quantity">qtt</label>
+						<input type="number" class="form-control" id="quantity" name="quantity" value="0" required>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Hủy</button>
+				<button type="button" class="btn btn-primary" onclick="saveNewProduct()">Lưu sản phẩm</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script>
+	 function showAddProductModal() {
+	 	   $('#addProductModal').modal('show');
+	 	  }
+	function saveNewProduct() {
+    const form = document.getElementById('newProductForm');
+
+    // Client-side validation
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(form);
+
+    fetch('/Admin/Product/CreateFromModal', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Lấy thông tin sản phẩm mới từ response
+            const newProduct = data.product;
+
+            // Thêm sản phẩm mới vào các dropdown sản phẩm
+            const productSelects = document.querySelectorAll('select[name$=".product_id"]');
+            productSelects.forEach(select => {
+                const newOption = new Option(
+                    newProduct.name, 
+                    newProduct.product_id,
+                    false,  // defaultSelected
+                    true    // selected
+                );
+                newOption.setAttribute('data-price', newProduct.price_in);
+                select.add(newOption);
+                
+                // Tự động chọn sản phẩm mới vừa thêm
+                select.value = newProduct.product_id;
+                
+                // Kích hoạt sự kiện change để cập nhật giá
+                const event = new Event('change', { bubbles: true });
+                select.dispatchEvent(event);
+            });
+            
+            // Đóng modal
+            $('#addProductModal').modal('hide');
+            form.reset();
+
+            // Thông báo thành công
+            Swal.fire({
+                icon: 'success',
+                title: 'Thêm sản phẩm thành công!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            throw new Error(data.message || 'Có lỗi xảy ra');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: error.message || 'Có lỗi xảy ra khi thêm sản phẩm'
+        });
+    });
+}
+</script>
 <script>
 	function formatMoney(amount) {
 		return new Intl.NumberFormat('vi-VN', {
@@ -105,39 +227,46 @@
 		}).format(amount);
 	}
 
-	function addProduct() {
+	 function addProduct() {
 		const index = document.getElementById('productRows').children.length;
-		const row = `
-					<tr>
-						<td>
-							<select name="ImportDetails[${index}].product_id" class="form-control" required onchange="updatePrice(this)">
-								<option value="">-- Chọn sản phẩm --</option>
+		   const row = `
+			   <tr>
+					  <td>
+					   <div class="input-group">
+						   <select name="ImportDetails[${index}].product_id" class="form-control" required onchange="updatePrice(this)">
+							   <option value="">-- Chọn sản phẩm --</option>
 	@foreach (var product in Model.Products)
 	{
-											<option value="@product.product_id" data-price="@product.price_in">@product.name</option>
+									<option value="@product.product_id" data-price="@product.price_in">@product.name</option>
 	}
-							</select>
-						</td>
-						<td>
-							<input type="number" name="ImportDetails[${index}].quantity" class="form-control"
-								   min="1" required onchange="calculateRowTotal(this)">
-						</td>
-						<td>
-							<input type="number" name="ImportDetails[${index}].unit_price" class="form-control"
-								   min="0" required onchange="calculateRowTotal(this)">
-						</td>
-						<td>
-							<input type="number" name="ImportDetails[${index}].total_price" class="form-control row-total" readonly>
-						</td>
-						<td class="text-center">
-							<button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this)">
-								<i class="fas fa-trash"></i>
+						   </select>
+						<div class="input-group-append">
+							 <button class="btn btn-outline-secondary" type="button" onclick="showAddProductModal()">
+								<i class="fas fa-plus"></i>
 							</button>
-						</td>
-					</tr>
-				`;
-		document.getElementById('productRows').insertAdjacentHTML('beforeend', row);
-	}
+						   </div>
+					</div>
+				 </td>
+				 <td>
+					 <input type="number" name="ImportDetails[${index}].quantity" class="form-control"
+							min="1" required onchange="calculateRowTotal(this)">
+				 </td>
+				 <td>
+					 <input type="number" name="ImportDetails[${index}].unit_price" class="form-control"
+							min="0" required onchange="calculateRowTotal(this)">
+				 </td>
+				 <td>
+					 <input type="number" name="ImportDetails[${index}].total_price" class="form-control row-total" readonly>
+				 </td>
+				 <td class="text-center">
+					 <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this)">
+						 <i class="fas fa-trash"></i>
+					 </button>
+				 </td>
+			 </tr>
+		 `;
+		 document.getElementById('productRows').insertAdjacentHTML('beforeend', row);
+	 }
 
 	function updatePrice(selectElement) {
 		const selectedOption = selectElement.options[selectElement.selectedIndex];
@@ -175,3 +304,5 @@
 		addProduct();
 	});
 </script>
+
+

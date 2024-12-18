@@ -75,7 +75,7 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-        [Route("/Create/{id}")]
+        //[Route("/Create/{id}")]
         [HttpGet]
         public IActionResult Create()
         {

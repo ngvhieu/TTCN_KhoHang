@@ -2,10 +2,10 @@
 using TTCN_KhoHang.Models;
 namespace TTCN_KhoHang.Areas.Admin.Components
 {
-    [ViewComponent(Name = "AdminMenuView")]
+    [ViewComponent(Name = "AdminMenu"),Area("Admin")]
     public class AdminMenuComponent : ViewComponent
     {
-        private DataContext _context;
+        private readonly DataContext _context;
         public AdminMenuComponent(DataContext context) 
         {
             _context = context;

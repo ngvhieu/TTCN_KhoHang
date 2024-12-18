@@ -5,7 +5,7 @@ namespace TTCN_KhoHang.ViewModels
 	{
 		public int export_id { get; set; }
 		public DateTime export_date { get; set; }
-		public decimal total_amount { get; set; }
+		public decimal? total_amount { get; set; }
 		public int customer_id { get; set; }
 		public int warehouse_id { get; set; }
 		public int user_id { get; set; }
@@ -20,8 +20,8 @@ namespace TTCN_KhoHang.ViewModels
 		public int product_id { get; set; }
 		public string name { get; set; }
 		public int quantity { get; set; }
-		public decimal unit_price { get; set; }
-		public decimal total_price { get; set; }
+		public decimal? unit_price { get; set; }
+		public decimal? total_price { get; set; }
 
 		// Lists for dropdowns
 		public List<Customer> Customers { get; set; }

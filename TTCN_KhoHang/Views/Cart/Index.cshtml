@@ -1,0 +1,59 @@
+﻿@model TTCN_KhoHang.Models.Cart
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+<div class="container">
+    <div class="page-inner">
+<h2>Giỏ hàng của bạn</h2>
+
+@if (Model.CartItems.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr>
+                    <td>@item.Product.name</td>
+                    <td>@item.Product.price_out</td>
+                    <td>
+                        <form method="post" asp-controller="Cart" asp-action="UpdateCart">
+                            <input type="hidden" name="cartItemId" value="@item.cart_item_id" />
+                            <input type="number" name="quantity" value="@item.quantity" min="1" class="form-control" style="width: 80px; display: inline;" />
+                            <button type="submit" class="btn btn-sm btn-secondary">Cập nhật</button>
+                        </form>
+                    </td>
+                    <td>@(((int)(item.quantity * item.Product.price_out)).ToString("C0"))</td>
+                    <td>
+                        <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
+                            <input type="hidden" name="cartItemId" value="@item.cart_item_id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4 class="text-right">Tổng tiền: @Model.CartItems.Sum(ci => ci.quantity * ci.Product.price_out)</h4>
+
+    <form method="get" asp-controller="Cart" asp-action="Checkout">
+        <button type="submit" class="btn btn-success btn-lg btn-block">Thanh toán</button>
+    </form>
+}
+else
+{
+    <p>Giỏ hàng của bạn hiện đang trống.</p>
+    <a asp-controller="ProductUser" asp-action="Index" class="btn btn-primary">Tiếp tục mua sắm</a>
+}
+    </div>
+</div>

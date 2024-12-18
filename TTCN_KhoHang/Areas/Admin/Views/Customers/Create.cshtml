@@ -1,6 +1,7 @@
 ﻿@model TTCN_KhoHang.Models.Customer
-<main class="content">
-	@await Component.InvokeAsync("MenuView")
+
+<div class="container">
+	<div class="page-inner">
 	<form method="post" class="card border-0 shadow p-3 pb-4 mb-4" asp-antiforgery="true">
 		<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
 			<h3 class="h5 mb-0">Create Customer</h3>
@@ -31,8 +32,9 @@
 						<input type="text" placeholder="customer_phone" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="customer_phone">
 					</div>
 				</div>
-				<div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Create</button></div>
+					<div class="col-12"><button class="btn btn-primary mt-2 animate-up-2" type="submit">Create</button></div>
 			</div>
 		</div>
 	</form>
-</main>
+	</div>
+</div>

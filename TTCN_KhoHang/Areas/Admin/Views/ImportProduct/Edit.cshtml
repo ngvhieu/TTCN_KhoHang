@@ -7,8 +7,8 @@
 {
 	<form method="post" action="/ImportProduct/Edit/importdetail/@Model.import_id" id="form_@i" asp-antiforgery="false" hidden></form>
 }
-<main class="content">
-	@await Component.InvokeAsync("MenuView")
+<div class="container">
+	<div class="page-inner">
 	<div class="card border-0 shadow mb-4">
 		<div class="card-body">
 			<form asp-action="Edit" method="post" asp-antiforgery="true">
@@ -142,4 +142,5 @@
 			</form>
 		</div>
 	</div>
-</main>
+	</div>
+</div>

@@ -16,29 +16,34 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 			_context = context;
 		}
 
-		public ActionResult Index()
+		public IActionResult Index()
 		{
 			var export = (from a in _context.ExportProducts
-						  join b in _context.users on a.user_id equals b.userid
-						  join c in _context.Customers on a.customer_id equals c.customer_id
-						  join d in _context.Warehouses on a.warehouse_id equals d.warehouse_id
-						  join e in _context.ExportDetails on a.export_id equals e.export_id
-						  join f in _context.Products on e.product_id equals f.product_id
-						  select new ExportView
-						  {
-							  export_id = a.export_id,
-							  export_date = a.export_date,
-							  total_amount = a.total_amount,
-							  customer_name = c.customer_name,
-							  warehouse_name = d.warehousename,
-							  user_name = b.username,
-							  status = a.status,
-							  product_id = f.product_id,
-							  name = f.name,
-							  quantity = e.quantity,
-							  unit_price = e.unit_price,
-							  total_price = e.total_price,
-						  }).ToList();
+              join b in _context.users on a.user_id equals b.userid into userGroup
+              from b in userGroup.DefaultIfEmpty()
+              join c in _context.Customers on a.customer_id equals c.customer_id into customerGroup
+              from c in customerGroup.DefaultIfEmpty()
+              join d in _context.Warehouses on a.warehouse_id equals d.warehouse_id into warehouseGroup
+              from d in warehouseGroup.DefaultIfEmpty()
+              join e in _context.ExportDetails on a.export_id equals e.export_id into detailGroup
+              from e in detailGroup.DefaultIfEmpty()
+              join f in _context.Products on e.product_id equals f.product_id into productGroup
+              from f in productGroup.DefaultIfEmpty()
+              select new ExportView
+              {
+                  export_id = a.export_id,
+                  export_date = a.export_date,
+                  total_amount = a.total_amount,
+                  customer_name = c != null ? c.customer_name : null,
+                  warehouse_name = d != null ? d.warehousename : null,
+                  user_name = b != null ? b.username : null,
+                  status = a.status,
+                  product_id = f != null ? f.product_id : 0,
+                  name = f != null ? f.name : null,
+                  quantity = e != null ? e.quantity : 0,
+                  unit_price = e != null ? e.unit_price : 0,
+                  total_price = e != null ? e.total_price : 0,
+              }).ToList();
 			return View(export);
 		}
 

@@ -1,5 +1,4 @@
-﻿using TTCN_KhoHang.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 namespace TTCN_KhoHang.Models
 {
     public class DataContext : DbContext
@@ -20,5 +19,19 @@ namespace TTCN_KhoHang.Models
 		public DbSet<ExportProduct> ExportProducts { get; set; }
 		public DbSet<ExportDetail> ExportDetails { get; set; }
 		public DbSet<Customer> Customers { get; set; }
-	}
+		public DbSet<Cart> Carts { get; set; }
+		public DbSet<CartItem> CartItems { get; set; }
+		public DbSet<Order> Order { get; set; }
+		public DbSet<OrderDetail> OrderDetail { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ExportProduct>()
+    .HasMany(m => m.exportdetails) // Thiết lập mối quan hệ một-nhiều với ExportDetails
+    .WithOne() // Thiết lập mối quan hệ ngược lại từ ExportDetails đến ExportProduct
+    .HasForeignKey(d => d.export_id); // Khóa ngoại trong ExportDetails trỏ đến ExportProduct
+
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+	
 }

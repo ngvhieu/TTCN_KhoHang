@@ -1,0 +1,85 @@
+﻿
+@model TTCN_KhoHang.Models.User
+
+<style>
+    #sidebar {
+        width: 250px;
+        position: fixed;
+        height: 100%;
+        background-color: #f8f9fa;
+    }
+
+    #main {
+        margin-left: 250px;
+        padding: 20px;
+    }
+</style>
+<div class="container">
+    <div class="page-inner">
+
+    <div class="pagetitle">
+        <h2>Xác nhận thêm người dùng</h2>
+    </div>
+    <div class="container shadow p-5">
+        <div class="row pb-2">
+            <h2>Thêm mới người dùng</h2>
+        </div>
+        <form method="post" asp-validate="true">
+            <div asp-validation-summary="All"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="username">UserName</label>
+                        <input type="text" class="form-control mb-3" asp-for="username" placeholder="Nhập tên người dùng">
+                        <span asp-validation-for="username" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="email">Email</label>
+                        <input type="email" class="form-control mb-3" asp-for="email" placeholder="Nhập email người dùng">
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="password">Password</label>
+                        <input type="password" class="form-control mb-3" asp-for="password" placeholder="Nhập mật khẩu">
+                        <span asp-validation-for="password" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="phone">Phone</label>
+                        <input type="tel" class="form-control mb-3" asp-for="phone" placeholder="Nhập số điện thoại">
+                        <span asp-validation-for="phone" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Trạng thái</label>
+                <input type="checkbox" class="form-check-input" asp-for="is_active" id="flexSwitchCheckDefault">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="role">Phân quyền</label>
+                        <select asp-for="role" class="form-select mb-3" id="role">
+                            <option value="1">Admin</option>
+                            <option value="2">User</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary p-2"><i class="bi bi-file-plus-fill"></i> Lưu</button>
+            <a asp-controller="UserManagement" asp-action="Index" class="btn btn-lg btn-warning p-2">Quay lại</a>
+        </form>
+    </div>
+    </div>
+</div>

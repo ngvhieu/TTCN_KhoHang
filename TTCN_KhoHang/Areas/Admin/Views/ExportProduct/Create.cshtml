@@ -1,11 +1,11 @@
 ﻿
 @using TTCN_KhoHang.Models
 @model TTCN_KhoHang.ViewModels.ExportView
-<main class="content">
-    @await Component.InvokeAsync("MenuView")
+<div class="container">
+    <div class="page-inner">
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
-            <form method="post" action="/ExportProduct/Create">
+            <form method="post" action="/Admin/ExportProduct/Create">
                 <div class="card">
                     <div class="card-header">
                         <h4>Thông tin phiếu xuất</h4>
@@ -133,7 +133,8 @@
             </div>
         </div>
     </div>
-</main>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 <script>

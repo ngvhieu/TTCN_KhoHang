@@ -33,7 +33,7 @@ namespace TTCN_KhoHang.Controllers
 			// Mã hóa mật khẩu trước khi kiểm tra
 			string hashedPassword = Functions.MD5Password(user.password);
 			user.password = hashedPassword;
-			
+																					
 			// Kiểm tra sự tồn tại của người dùng với email và mật khẩu đã mã hóa
 			var check = _context.users
 				.Where(m => m.username == user.username && m.password == hashedPassword)

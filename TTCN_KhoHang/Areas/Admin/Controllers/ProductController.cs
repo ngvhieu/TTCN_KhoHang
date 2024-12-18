@@ -205,5 +205,50 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 
             return View(alerts);
         }
-    }
+		[HttpPost]
+		[IgnoreAntiforgeryToken]
+		public JsonResult CreateFromModal(Product model)
+		{
+			if (!Functions.IsLogin())
+			{
+				return Json(new { success = false, message = "Bạn cần đăng nhập để thực hiện thao tác này" });
+			}
+
+			if (!ModelState.IsValid)
+			{
+				return Json(new { success = false, message = "Dữ liệu không hợp lệ" });
+			}
+
+			try
+			{
+				// Kiểm tra trùng lặp sản phẩm
+				var existingProduct = _context.Products.FirstOrDefault(p => p.name == model.name);
+				if (existingProduct != null)
+				{
+					return Json(new { success = false, message = "Sản phẩm đã tồn tại" });
+				}
+
+				// Thêm sản phẩm mới
+				_context.Products.Add(model);
+				_context.SaveChanges();
+
+				return Json(new
+				{
+					success = true,
+					product = new
+					{
+						id = model.product_id,
+						name = model.name,
+						mfg = model.mfg,
+						exp = model.exp
+					}
+				});
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = "Đã xảy ra lỗi khi thêm sản phẩm: " + ex.Message });
+			}
+		}
+
+	}
 }

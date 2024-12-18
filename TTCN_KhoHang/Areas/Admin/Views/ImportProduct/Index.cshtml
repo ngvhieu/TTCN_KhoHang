@@ -1,9 +1,8 @@
 ﻿@using TTCN_KhoHang.Models
 @using System.Globalization
 @model IList<TTCN_KhoHang.ViewModels.ImportView>
-
-<main class="content">
-	@await Component.InvokeAsync("MenuView")
+<div class="container">
+	<div class="page-inner">
 	<div class="card border-0 shadow mb-4">
 		<div class="card-body">
 			<div class="table-responsive">
@@ -102,7 +101,8 @@
 			</div>
 		</div>
 	</div>
-</main>
+	</div>
+</div>
 <script>
 	function deleteImport(importId) {
 		if (confirm("Bạn có chắc muốn xóa phiếu nhập này không?")) {
