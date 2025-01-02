@@ -24,6 +24,7 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
                           join p in _context.Products on od.product_id equals p.product_id
                           select new OrderView
                           {
+                              customer_name = u.username,
                               order_id = o.order_id,
                               order_date = o.order_date,
                               user_name = u.username,
@@ -145,11 +146,27 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 
             if (order != null && order.order_status == "Pending")
             {
-                order.order_status = "Rejected";
-                _context.SaveChanges();
-                TempData["Success"] = "Đơn hàng đã bị từ chối.";
-            }
-            else
+				var orderDetails = _context.OrderDetail
+			.Where(od => od.order_id == order.order_id)
+			.ToList();
+
+				if (orderDetails.Any())
+				{
+					foreach (var detail in orderDetails)
+					{
+						var product = _context.Products.Find(detail.product_id);
+						if (product != null)
+						{
+							product.quantity += detail.quantity;
+							_context.Products.Update(product);
+						}
+					}
+				}
+				order.order_status = "Rejected";
+				_context.SaveChanges();
+				TempData["Success"] = "Đơn hàng đã bị từ chối và số lượng sản phẩm đã được cộng lại.";
+			}
+			else
             {
                 TempData["Error"] = "Không thể từ chối đơn hàng.";
             }

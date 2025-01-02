@@ -23,10 +23,12 @@ namespace TTCN_KhoHang.Controllers
 			var orders = (from o in _context.Order
 						  join od in _context.OrderDetail on o.order_id equals od.order_id
 						  join p in _context.Products on od.product_id equals p.product_id
-						  where o.user_id == userId
+						  join z in _context.users on o.user_id equals z.userid
+                          where o.user_id == userId
 						  select new UserOrderView
 						  {
-							  order_id = o.order_id,
+                              user_name = z.username,
+                              order_id = o.order_id,
 							  order_date = o.order_date,
 							  order_status = o.order_status,
 							  product_id = p.product_id,
@@ -38,6 +40,7 @@ namespace TTCN_KhoHang.Controllers
 								  .Where(d => d.order_id == o.order_id)
 								  .Sum(d => d.quantity * d.unit_price)
 						  }).ToList();
+
 
 			return View(orders);
 		}

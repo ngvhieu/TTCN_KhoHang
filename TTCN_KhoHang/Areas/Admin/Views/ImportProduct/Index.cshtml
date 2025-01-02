@@ -19,7 +19,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var im in Model.GroupBy(i => i.import_id).Select(g => g.First()))
+						@foreach (var im in Model.OrderByDescending(e => e.import_date).GroupBy(e => e.import_id).Select(g => g.First()))
 						{
 							<tr class="order-row" data-bs-toggle="collapse" data-bs-target="#orderDetail_@im.import_id">
 								<td><input type="checkbox" class="form-check-input"></td>

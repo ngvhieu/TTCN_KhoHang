@@ -20,14 +20,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (var ex in Model.GroupBy(e => e.export_id).Select(g => g.First()))
+							@foreach (var ex in Model.OrderByDescending(e => e.export_date).GroupBy(e => e.export_id).Select(g => g.First()))
 							{
 								<tr class="order-row" data-bs-toggle="collapse" data-bs-target="#orderDetail_@ex.export_id">
 									<td><input type="checkbox" class="form-check-input"></td>
 									<td><i class="far fa-star"></i></td>
 									<td>@ex.export_id</td>
 									<td>@ex.export_date.ToString("dd/MM/yyyy HH:mm")</td>
-									<td>@ex.customer_name</td>
+									<td> @((ex.customer_name != null) ? ex.customer_name : ex.user_name)</td>
 									<td class="text-end">@(((int)(ex.total_amount)).ToString("N0", CultureInfo.InvariantCulture))</td>
 									<td><span class="badge @(ex.status == "Pending" ? "bg-warning" : "bg-success")">@ex.status</span></td>
 								</tr>
@@ -39,7 +39,7 @@
 													<div class="col-md-6">
 														<div class="mb-3"><label class="form-label">Mã xuất hàng:</label> <span>@ex.export_id</span></div>
 														<div class="mb-3"><label class="form-label">Thời gian:</label> <span>@ex.export_date.ToString("dd/MM/yyyy HH:mm")</span></div>
-														<div class="mb-3"><label class="form-label">Khách hàng:</label> <span>@ex.customer_name</span></div>
+														<div class="mb-3"><label class="form-label">Khách hàng:</label> <span> @((ex.customer_name != null) ? ex.customer_name : ex.user_name)</span></div>
 														<div class="mb-3"><label class="form-label">Người tạo:</label> <span>@ex.user_name</span></div>
 													</div>
 													<div class="col-md-6">
@@ -107,7 +107,7 @@
 <script>
 	function deleteExport(exportId) {
 		if (confirm("Bạn có chắc muốn xóa phiếu xuất này không?")) {
-			fetch(`/ExportProduct/Delete/${exportId}`, {
+			fetch(`/Admin/ExportProduct/Delete/${exportId}`, {
 				method: 'POST',
 				headers: {
 					'X-Requested-With': 'XMLHttpRequest',

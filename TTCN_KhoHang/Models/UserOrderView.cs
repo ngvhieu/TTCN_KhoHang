@@ -2,7 +2,8 @@
 {
 	public class UserOrderView
 	{
-		public int order_id { get; set; }
+		public string user_name { get; set; }
+        public int order_id { get; set; }
 		public DateTime order_date { get; set; }
 		public string order_status { get; set; }
 		public int product_id { get; set; }
