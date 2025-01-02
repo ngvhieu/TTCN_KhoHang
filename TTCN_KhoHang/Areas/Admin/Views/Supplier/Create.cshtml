@@ -1,45 +1,46 @@
 ﻿@model TTCN_KhoHang.Models.Supplier
 <div class="container">
 	<div class="page-inner">
-	<form method="post" class="card border-0 shadow p-3 pb-4 mb-4" asp-antiforgery="true">
-		<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
-			<h3 class="h5 mb-0">Create Supplier</h3>
-		</div>
-		<div class="card-body p-0 p-md-4">
-			<div class="row justify-content-center">
-				<div class="col-12 col-lg-6">
-					<div class="form-group mb-4">
-						<label asp-for="supplier_name">Name</label>
-						<input type="text" class="form-control" placeholder="supplier_name" id="cartInputname" aria-describedby="cartInputname" asp-for="supplier_name" required="">
-					</div>
-				</div>
-				<div class="col-12 col-lg-6">
-					<div class="form-group mb-4">
-						<label asp-for="address">address</label>
-						<input type="text" placeholder="address" class="form-control" id="cartInputdes" aria-describedby="cartInputdes" asp-for="address">
-					</div>
-				</div>
-				<div class="col-12 col-lg-3">
-					<div class="form-group mb-4">
-						<label asp-for="email">email</label>
-						<input type="text" placeholder="email" class="form-control" id="cartInputprin" aria-describedby="cartInputprin" asp-for="email">
-					</div>
-				</div>
-				<div class="col-12 col-lg-3">
-					<div class="form-group mb-4">
-						<label asp-for="phone">phone</label>
-						<input type="text" placeholder="phone" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="phone">
-					</div>
-				</div>
-				<div class="col-12 col-lg-3">
-					<div class="form-group mb-4">
-						<label asp-for="tax">tax</label>
-						<input type="text" placeholder="tax" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="tax">
-					</div>
-				</div>
-				<div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Create</button></div>
+		<form method="post" class="card border-0 shadow p-3 pb-4 mb-4" asp-antiforgery="true">
+			<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
+				<h3 class="h5 mb-0">Tạo Nhà Cung Cấp</h3>
 			</div>
-		</div>
-	</form>
+			<div class="card-body p-0 p-md-4">
+				<div class="row justify-content-center">
+					<div class="col-12 col-lg-6">
+						<div class="form-group mb-4">
+							<label asp-for="supplier_name">Tên</label>
+							<input type="text" class="form-control" placeholder="Tên nhà cung cấp" id="cartInputname" aria-describedby="cartInputname" asp-for="supplier_name" required="">
+						</div>
+					</div>
+					<div class="col-12 col-lg-6">
+						<div class="form-group mb-4">
+							<label asp-for="address">Địa Chỉ</label>
+							<input type="text" placeholder="Địa chỉ" class="form-control" id="cartInputdes" aria-describedby="cartInputdes" asp-for="address">
+						</div>
+					</div>
+					<div class="col-12 col-lg-3">
+						<div class="form-group mb-4">
+							<label asp-for="email">Email</label>
+							<input type="text" placeholder="Email" class="form-control" id="cartInputprin" aria-describedby="cartInputprin" asp-for="email">
+						</div>
+					</div>
+					<div class="col-12 col-lg-3">
+						<div class="form-group mb-4">
+							<label asp-for="phone">Điện Thoại</label>
+							<input type="text" placeholder="Điện thoại" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="phone">
+						</div>
+					</div>
+					<div class="col-12 col-lg-3">
+						<div class="form-group mb-4">
+							<label asp-for="tax">Mã Số Thuế</label>
+							<input type="text" placeholder="Mã số thuế" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="tax">
+						</div>
+					</div>
+					<div class="col-12"><button class="btn btn-primary mt-2 animate-up-2" type="submit">Tạo</button></div>
+				</div>
+			</div>
+		</form>
 	</div>
-</div>		
+</div>
+

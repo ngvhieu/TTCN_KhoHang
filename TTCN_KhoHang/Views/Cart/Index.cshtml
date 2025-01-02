@@ -28,7 +28,7 @@
                     <td>
                         <form method="post" asp-controller="Cart" asp-action="UpdateCart">
                             <input type="hidden" name="cartItemId" value="@item.cart_item_id" />
-                            <input type="number" name="quantity" value="@item.quantity" min="1" class="form-control" style="width: 80px; display: inline;" />
+                            <input type="number" name="quantity" value="@item.quantity" min="1" max="@item.Product.quantity" class="form-control" style="width: 80px; display: inline;" />
                             <button type="submit" class="btn btn-sm btn-secondary">Cập nhật</button>
                         </form>
                     </td>

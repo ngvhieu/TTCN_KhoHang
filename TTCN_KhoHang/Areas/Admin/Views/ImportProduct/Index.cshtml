@@ -106,7 +106,7 @@
 <script>
 	function deleteImport(importId) {
 		if (confirm("Bạn có chắc muốn xóa phiếu nhập này không?")) {
-			fetch(`/ImportProduct/Delete/${importId}`, {
+			fetch(`/Admin/ImportProduct/Delete/${importId}`, {
 				method: 'POST',
 				headers: {
 					'X-Requested-With': 'XMLHttpRequest',

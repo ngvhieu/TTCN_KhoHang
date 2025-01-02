@@ -1,96 +1,86 @@
 ﻿@using TTCN_KhoHang.Models
 
-@model IList<User> 
+@model IList<User>
 <style>
 	#sidebar {
-		width: 250px; 
-		position: fixed; 
-		height: 100%; 
-		background-color: #f8f9fa; 
+		width: 250px;
+		position: fixed;
+		height: 100%;
+		background-color: #f8f9fa;
 	}
 
 	#main {
-		margin-left: 250px; 
-		padding: 20px; 
+		margin-left: 250px;
+		padding: 20px;
 	}
 </style>
 <div class="container">
-    <div class="page-inner">
+	<div class="page-inner">
 
-	<div class="pagetitle">
-		<h2 style="margin: 10px">Danh sách người dùng</h2>
-	</div>
-	<p style="padding: 10px 20px;" >
-            <a type="button" class="btn btn-success" asp-controller="UserManagement" asp-action="Create">
-			<i class="bi bi-file-earmark-text me-1"></i>
-			<span >Thêm người dùng</span>
-		</a>
-	</p>
-	<section class="section-title dashboard">
-		<div class="row">
-			<div class="col-12">
-				<div class="card recent-sales overflow-auto">
-                    <div class="card card-body border-0 shadow table-wrapper table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="border-gray-50">#</th>
-                                    <th class="border-gray-50">Tên người dùng</th>
-                                    <th class="border-gray-50">Email người dùng</th>
-                                    <th class="border-gray-50">Mật khẩu</th>
-                                    <th class="border-gray-50">Vai trò</th>
-                                    <th class="border-gray-50">Trạng thái</th>
-                                    <th class="border-gray-50">Chức năng</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            <a href="#" class="fw-bold">
-                                                @item.userid
-                                            </a>
-                                        </td>
-                                        <td>
-                                                <a asp-controller="UserManagement" asp-action="Details"
-                                               asp-route-id="@item.userid" class="fw-normal">@item.username</a>
-                                        </td>
-                                        <td ><span class="fw-normal">@item.email</span></td>
-                                        <td ><span class="fw-normal">@item.password</span></td>
-                                        <td style="text-align: center;"><span class="fw-bold">@item.role</span></td>
-                                        <td style ="text-align: center;"><span class="fw-bold text-warning">@item.is_active</span></td>
+		<div class="pagetitle">
+			<h2 style="margin: 10px">Danh sách người dùng</h2>
+		</div>
+		<p style="padding: 10px 20px;">
+			<a type="button" class="btn btn-success" asp-controller="UserManagement" asp-action="Create">
+				<i class="bi bi-file-earmark-text me-1"></i>
+				<span>Thêm người dùng</span>
+			</a>
+		</p>
+		<section class="section-title dashboard">
+			<div class="row">
+				<div class="col-12">
+					<div class="card recent-sales overflow-auto">
+						<div class="card card-body border-0 shadow table-wrapper table-responsive">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th class="border-gray-50">#</th>
+										<th class="border-gray-50">Tên người dùng</th>
+										<th class="border-gray-50">Email người dùng</th>
+										<th class="border-gray-50">Mật khẩu</th>
+										<th class="border-gray-50">Vai trò</th>
+										<th class="border-gray-50">Trạng thái</th>
+										<th class="border-gray-50">Chức năng</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model)
+									{
+										<tr>
+											<td>
+												<a href="#" class="fw-bold">
+													@item.userid
+												</a>
+											</td>
+											<td>
+												<a asp-controller="UserManagement" asp-action="Details"
+												   asp-route-id="@item.userid" class="fw-normal">@item.username</a>
+											</td>
+											<td><span class="fw-normal">@item.email</span></td>
+											<td><span class="fw-normal">@item.password</span></td>
+											<td style="text-align: center;"><span class="fw-bold">@item.role</span></td>
+											<td style="text-align: center;"><span class="fw-bold text-warning">@item.is_active</span></td>
 
-                                        <td style="text-align: center;">
-                                            <div class="btn-group" >
-                                                <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                                                    <span class="icon icon-sm">
-                                                        <span class="fas fa-ellipsis-h icon-dark" style="text-align: center;"></span>
-                                                    </span>
-                                                    <span class="visually-hidden">Toggle Dropdown</span>
-                                                </button>
-                                                <div class="dropdown-menu py-0">
-                                                        <a asp-controller="UserManagement" asp-action="Details"
-                                                       asp-route-id="@item.userid" class="dropdown-item rounded-top"><span class="fas fa-eye me-2"></span>View Details</a>
-                                                        <a class="dropdown-item" asp-controller="UserManagement" asp-action="Edit"
-                                                       asp-route-id="@item.userid"><span class="fas fa-edit me-2"></span>Edit</a>
-                                                        <a asp-controller="UserManagement" asp-action="Delete"
-                                                       asp-route-id="@item.userid" class="dropdown-item text-danger rounded-bottom"><span class="fas fa-trash-alt me-2"></span>Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                        
-                    </div>
+											<td>
+												<div class="btn-group">
+													<a class="dropdown-item" style="padding-right: 10px; asp-controller="UserManagement" asp-action="Edit"
+													   asp-route-id="@item.userid"><span class="fas fa-edit me-2"></span>Edit</a>
+													<a asp-controller="UserManagement" asp-action="Delete"
+													   asp-route-id="@item.userid" class="dropdown-item text-danger rounded-bottom"><span class="fas fa-trash-alt me-2"></span>Remove</a>
+												</div>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
-    </div>
+	</div>
 </div>
 
 

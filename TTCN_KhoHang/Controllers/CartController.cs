@@ -86,8 +86,14 @@ namespace TTCN_KhoHang.Controllers
 				}
 				else
 				{
-					cartItem.quantity++;
-					_context.CartItems.Update(cartItem);
+					if (cartItem.quantity < product.quantity)
+					{
+						cartItem.quantity++;
+					}
+					else
+					{
+						return BadRequest("Không đủ số lượng sản phẩm");
+					}
 				}
 
 				_context.SaveChanges();

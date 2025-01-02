@@ -108,7 +108,8 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
                 Value = "0"
             });
             ViewBag.mnList = mnList;
-            return View();
+			
+			return View();
         }
 
         [HttpPost]
@@ -126,8 +127,9 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
+			
 
-            return View(mn);
+			return View(mn);
         }
 
         public IActionResult Edit(int? id)

@@ -147,7 +147,7 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Route("/ImportProduct/Edit/{id:int}")]
+		[Route("/Admin/ImportProduct/Edit/{id:int}")]
 		public ActionResult Edit(int id, ImportView viewModel)
 		{
 			try
@@ -178,19 +178,19 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 		}
 		[HttpPost]
 		[IgnoreAntiforgeryToken]
-		[Route("/ImportProduct/Edit/importdetail/{import_id:int}")]
+		[Route("/Admin/ImportProduct/Edit/importdetail/{import_id:int}")]
 		public async Task<IActionResult> updateProduct(int import_id, ImportDetail importDetail)
 		{
 			var importProduct = _context.ImportProducts.FirstOrDefault(m => m.import_id == import_id);
 			if (importProduct == null)
 			{
-				return Redirect($"/ImportProduct/Edit/{import_id}");
+				return Redirect($"/Admin/ImportProduct/Edit/{import_id}");
 			}
 
 			var oldImportDetail = _context.ImportDetails.FirstOrDefault(d => d.import_id == importDetail.import_id && d.product_id == importDetail.product_id && d.import_detail_id == importDetail.import_detail_id);
 			if (oldImportDetail == null)
 			{
-				return Redirect($"/ImportProduct/Edit/{import_id}");
+				return Redirect($"/Admin/ImportProduct/Edit/{import_id}");
 			}
 
 			_context.ChangeTracker.Clear(); // xoá theo dõi của 2 truy vấn trên
@@ -200,21 +200,21 @@ namespace TTCN_KhoHang.Areas.Admin.Controllers
 			var product = _context.Products.FirstOrDefault(m => m.product_id == importDetail.product_id);
 			if (product == null)
 			{
-				return Redirect($"/ImportProduct/Edit/{import_id}");
+				return Redirect($"/Admin/ImportProduct/Edit/{import_id}");
 			}
 
 			product.quantity = product.quantity - oldImportDetail.quantity + importDetail.quantity;
 			if (product.quantity < 0)
 			{
 				//quá số lượng
-				return Redirect($"/ImportProduct/Edit/{import_id}");
+				return Redirect($"/Admin/ImportProduct/Edit/{import_id}");
 			}
 
 			importDetail.total_price = importDetail.quantity * importDetail.unit_price;
 			_context.ImportDetails.Update(importDetail);
 			_context.Update(product);
 			await _context.SaveChangesAsync();
-			return Redirect($"/ImportProduct/Edit/{import_id}");
+			return Redirect($"/Admin/ImportProduct/Edit/{import_id}");
 		}
 
 		[HttpPost]

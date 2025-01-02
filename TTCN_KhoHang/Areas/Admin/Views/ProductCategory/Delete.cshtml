@@ -12,18 +12,16 @@
                     <div class="form-group mb-4">
                         <label asp-for="categoryname">Category Name</label>
                         <input type="text" class="form-control" placeholder="product name" id="cartInputname" asp-for="categoryname" required=""disabled>
-                        <span asp-validation-for="categoryname" class="alert-danger"></span>
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
                     <div class="form-group mb-4">
                         <label asp-for="note">Description</label>
                         <input type="text" class="form-control" placeholder="Description" id="cartInputdes" asp-for="note" disabled>
-                        <span asp-validation-for="note" class="alert-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Delete</button></div>
+                    <div class="col-12"><button class="btn btn-primary mt-2 animate-up-2" type="submit">Delete</button></div>
             </div>
         </div>
     </form>

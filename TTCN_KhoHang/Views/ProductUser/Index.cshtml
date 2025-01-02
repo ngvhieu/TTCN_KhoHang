@@ -79,6 +79,7 @@
 									<div class="product-info">
 										<div class="product-title" title="@item.name">@item.name</div>
 										<div class="product-price">@string.Format("{0:N0} VND", item.price_out)</div>
+										<div class="product-quantity">Số lượng còn lại: @item.quantity</div>
 										<form method="post" asp-controller="Cart" asp-action="AddToCart">
 											<input type="hidden" name="productId" value="@item.product_id" />
 											<button type="submit" class="btn btn-primary btn-block">Thêm vào giỏ hàng</button>

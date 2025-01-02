@@ -4,26 +4,24 @@
     <form method="post" asp-action="Edit" class="card border-0 shadow p-3 pb-4 mb-4">
         <input type="hidden" asp-for="category_id" />
         <div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
-            <h3 class="h5 mb-0">Edit ProductCategory</h3>
+            <h3 class="h5 mb-0">Sửa danh mục</h3>
         </div>
         <div class="card-body p-0 p-md-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-6">
                     <div class="form-group mb-4">
-                        <label asp-for="categoryname">Category Name</label>
-                        <input type="text" class="form-control" placeholder="product name" id="cartInputname" asp-for="categoryname" required="">
-                        <span asp-validation-for="categoryname" class="alert-danger"></span>
+                        <label asp-for="categoryname">Tên danh mục</label>
+                        <input type="text" class="form-control" placeholder="tên danh mục" id="cartInputname" asp-for="categoryname" required="">
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
                     <div class="form-group mb-4">
-                        <label asp-for="note">Description</label>
-                        <input type="text" class="form-control" placeholder="Description" id="cartInputdes" asp-for="note">
-                        <span asp-validation-for="note" class="alert-danger"></span>
+                        <label asp-for="note">Mô tả</label>
+                        <input type="text" class="form-control" placeholder="mô tả" id="cartInputdes" asp-for="note">
                     </div>
                 </div>
 
-                <div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Edit</button></div>
+                    <div class="col-12"><button class="btn btn-primary mt-2 animate-up-2" type="submit">Chỉnh sửa</button></div>
             </div>
         </div>
     </form>

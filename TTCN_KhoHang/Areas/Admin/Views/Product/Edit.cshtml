@@ -3,86 +3,75 @@
 	<div class="page-inner">
 	<form method="post" asp-action="Edit" class="card border-0 shadow p-3 pb-4 mb-4">
 		<div asp-validation-summary="All" class="card-header mx-lg-4 p-0 py-3 py-lg-4 mb-4 mb-md-0">
-			<h3 class="h5 mb-0">Edit Product</h3>
+			<h3 class="h5 mb-0">Sửa sản phẩm</h3>
 		</div>
 		<input asp-for="product_id" required hidden="">
 		<div class="card-body p-0 p-md-4">
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-6">
 					<div class="form-group mb-4">
-						<label asp-for="name">Product Name</label>
-						<input type="text" class="form-control" placeholder="product name" id="cartInputname" aria-describedby="cartInputname" asp-for="name" required="">
-						<span asp-validation-for="name" class="alert-danger"></span>
+						<label asp-for="name">Tên sản phẩm</label>
+						<input type="text" class="form-control" placeholder="sản phẩm" id="cartInputname" aria-describedby="cartInputname" asp-for="name" required="">
 					</div>
 				</div>
 				<div class="col-12 col-lg-6">
 					<div class="form-group mb-4">
-						<label asp-for="description">Description</label>
-						<input type="text" placeholder="Description" class="form-control" id="cartInputdes" aria-describedby="cartInputdes" asp-for="description">
-						<span asp-validation-for="description" class="alert-danger"></span>
+						<label asp-for="description">Mô tả</label>
+						<input type="text" placeholder="Mô tả" class="form-control" id="cartInputdes" aria-describedby="cartInputdes" asp-for="description">
 					</div>
 				</div>
 				<div class="col-12 col-lg-3">
 					<div class="form-group mb-4">
-						<label asp-for="price_in">Price in</label>
-						<input type="text" placeholder="Price in" class="form-control" id="cartInputprin" aria-describedby="cartInputprin" asp-for="price_in">
-						<span asp-validation-for="price_in" class="alert-danger"></span>
+						<label asp-for="price_in">Giá nhập</label>
+						<input type="text" placeholder="giá nhập" class="form-control" id="cartInputprin" aria-describedby="cartInputprin" asp-for="price_in">
 					</div>
 				</div>
 				<div class="col-12 col-lg-3">
 					<div class="form-group mb-4">
-						<label asp-for="price_out">Price out</label>
-						<input type="text" placeholder="Price out" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="price_out">
-						<span asp-validation-for="price_out" class="alert-danger"></span>
+						<label asp-for="price_out">Giá xuất</label>
+						<input type="text" placeholder="giá xuất" class="form-control" id="cartInputprout" aria-describedby="cartInputprout" asp-for="price_out">
 					</div>
 				</div>
 				<div class="col-12 col-lg-3">
 					<div class="form-group mb-4">
-						<label asp-for="quantity">Quantity</label>
-						<input type="text" placeholder="Quantity" class="form-control" id="cartInputqtt" aria-describedby="cartInputqtt" asp-for="quantity">
-						<span asp-validation-for="quantity" class="alert-danger"></span>
+						<label asp-for="quantity">Số lượng</label>
+						<input type="text" placeholder="số lượng" class="form-control" id="cartInputqtt" aria-describedby="cartInputqtt" asp-for="quantity">
 					</div>
 				</div>
 				<div class="col-12 col-lg-3">
-					<label asp-for="category_id">Category</label>
+					<label asp-for="category_id">Loại</label>
 					<select class="form-select mb-4" id="country" aria-label="Country select example" asp-for="category_id">
 						<option selected="selected">Choose...</option>
-						<option value="1">Car</option>
-						<option value="2">bike</option>
-						<option value="3">Canada</option>
-						<option value="4">Phone</option>
-						<option value="5">TV</option>
-						<option value="6">Fan</option>
-						<option value="7">Chair</option>
+						<option value="1">Điện thoại</option>
+						<option value="2">Laptop</option>
+						<option value="3">Phụ kiện</option>
 					</select>
 				</div>
 				<div class="col-12 col-lg-3">
 					<div class="form-group mb-4">
 						<label asp-for="mfg">MFG</label>
 						<input type="date" class="form-control" id="cartInputAddressq1" aria-describedby="cartInputAddressq1" asp-for="mfg">
-						<span asp-validation-for="mfg" class="alert-danger"></span>
 					</div>
 				</div>
 				<div class="col-12 col-lg-3">
 					<div class="form-group mb-4">
 						<label asp-for="exp">EXP</label>
 						<input type="date" class="form-control" id="cartInputAddress1" aria-describedby="cartInputAddress1" asp-for="exp">
-						<span asp-validation-for="exp" class="alert-danger"></span>
 					</div>
 				</div>
 
 				<div class="col-12 col-lg-6">
-					<label asp-for="location">Location</label>
+					<label asp-for="location">Kho</label>
 					<select class="form-select mb-4" id="country" aria-label="Country select example" asp-for="location">
-						<option selected="selected">Choose...</option>
-						<option value="A">Ware A</option>
-						<option value="B">Ware B</option>
-						<option value="C">Ware C</option>
+						<option selected="selected">Chọn...</option>
+						<option value="1">Vinh 1</option>
+						<option value="2">Vinh 2</option>
+						<option value="3">Vinh 3</option>
 
 					</select>
 				</div>
 
-				<div class="col-12"><button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Edit</button></div>
+					<div class="col-12"><button class="btn btn-primary mt-2 animate-up-2" type="submit">Sửa</button></div>
 			</div>
 		</div>
 	</form>

@@ -5,7 +5,7 @@
 
 @for (var i = 0; i < Model.ImportDetails.Count; i++)
 {
-	<form method="post" action="/ImportProduct/Edit/importdetail/@Model.import_id" id="form_@i" asp-antiforgery="false" hidden></form>
+	<form method="post" action="/Admin/ImportProduct/Edit/importdetail/@Model.import_id" id="form_@i" asp-antiforgery="false" hidden></form>
 }
 <div class="container">
 	<div class="page-inner">

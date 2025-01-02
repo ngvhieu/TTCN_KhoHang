@@ -1,11 +1,7 @@
 ﻿@using TTCN_KhoHang.Models
 @using System.Globalization
 
-<main class="content">
-    <div class="container-fluid p-0">
-        <!-- Menu Component -->
-        @await Component.InvokeAsync("AdminMenu")
-        <!-- Stats Card -->
+    <div class="page-inner">
         <div class="row">
             <div class="col-12">
                 <div class="card border-0 shadow">
@@ -31,7 +27,6 @@
             </div>
         </div>
     </div>
-</main>
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -118,30 +113,23 @@
                 alert('Không thể tải dữ liệu. Vui lòng thử lại sau.');
             });
     }
-
-    // Initialize chart
     document.addEventListener('DOMContentLoaded', () => {
         createChart('bar');
-
-        // Handle chart type change
         document.getElementById('chartType').addEventListener('change', (e) => {
             createChart(e.target.value);
         });
     });
-
-
 </script>
-}
 
 <style>
     .card {
         transition: all 0.3s ease-in-out;
     }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
 
     .form-select {
         padding: 0.375rem 1.75rem 0.375rem 0.75rem;
@@ -152,9 +140,9 @@
         cursor: pointer;
     }
 
-    .form-select:focus {
-        border-color: #80bdff;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
+        .form-select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
 </style>
